@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.LoginRequest
-import com.example.datingapp.API.Endpoints.LoginResponse
+import com.example.datingapp.Utils.DialogUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
@@ -40,6 +40,9 @@ class LoginActivity : AppCompatActivity() {
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
 
+            if (email.isEmpty()) emailEditText.error = "Preencha o campo de email!"
+            if (password.isEmpty()) passwordEditText.error = "Preencha o campo de palavra-passe!"
+
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 val loginRequest = LoginRequest(email, password)
 
@@ -47,43 +50,40 @@ class LoginActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                     ApiClient.login(loginRequest) { response, error ->
                         if (error != null) {
-                            // Exibir erro no log
+                            // Exibir erro no log e mostrar mensagem de erro
                             println("Erro: $error")
                             DialogUtils.showErrorPopup(
                                 context = this@LoginActivity,
-                                title = "Erro de Comunicação",
-                                message = "Falha na comunicação com o servidor."
+                                title = "Erro de Login",
+                                message = error
                             )
-                        } else if (response != null) {
-                            // Analisar a resposta
-                            val success = response.success
-                            val token = response.token
-
-                            if (success && token != null) {
-                                // Guardar o token no SharedPreferences
-                                saveSessionToken(token)
-                                println("Token salvo: $token")
-
-                                // Navegar para a próxima página
+                        } else {
+                            // Se a resposta for bem-sucedida, processa o login
+                            if (response != null && response.success) {
+                                println("Login bem-sucedido. Token: ${response.token}")
+                                saveSessionToken(response.token)
                                 val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
                                 startActivity(intent)
-                                println("Login efetuado com sucesso!")
-                                finish() // Fecha a atividade de login
+                                DialogUtils.showNotification(
+                                    context = this@LoginActivity,
+                                    channelId = "login",
+                                    title = "Login",
+                                    message = "Login bem-sucedido!"
+                                )
+                                finish()
                             } else {
-                                // Mostrar mensagem de erro
-                                val errorMessage = response.message
-                                runOnUiThread {
-                                    DialogUtils.showErrorPopup(
-                                        context = this@LoginActivity,
-                                        title = "Erro de Login",
-                                        message = errorMessage
-                                    )
-                                }
-                                println("Erro de login: $errorMessage")
+                                println("Erro de autenticação: ${response?.message}")
+                                DialogUtils.showErrorPopup(
+                                    context = this@LoginActivity,
+                                    title = "Erro de Login",
+                                    message = response?.message ?: "Erro desconhecido"
+                                )
                             }
                         }
                     }
                 }
+
+
             } else {
                 if (email.isEmpty()) emailEditText.error = "Preencha o campo de email!"
                 if (password.isEmpty()) passwordEditText.error = "Preencha o campo de palavra-passe!"

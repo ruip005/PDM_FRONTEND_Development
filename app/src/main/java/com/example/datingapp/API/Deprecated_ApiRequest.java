@@ -10,14 +10,14 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ApiRequest { // Arquivo deprecated
+public class Deprecated_ApiRequest { // Arquivo deprecated
     private String method;
     private String link;
     private HashMap<String, String> headers;
     private JSONObject bodyJson;
 
     // Construtor
-    public ApiRequest(String method, String link, HashMap<String, String> headers, JSONObject bodyJson) {
+    public Deprecated_ApiRequest(String method, String link, HashMap<String, String> headers, JSONObject bodyJson) {
         this.method = method.toUpperCase();
         this.link = link;
         this.headers = headers != null ? headers : new HashMap<>();

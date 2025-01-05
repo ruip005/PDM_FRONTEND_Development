@@ -3,7 +3,8 @@ package com.example.datingapp
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.datingapp.API.ApiRequest
+import com.example.datingapp.API.Deprecated_ApiRequest
+import com.example.datingapp.Utils.DialogUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.CoroutineScope
@@ -37,7 +38,13 @@ class Deprecated_SignUpActivity : AppCompatActivity() {
                                     put("password", password)
                                 }
                                 //val apiUrl = getString(R.string.apiSignUp)
-                                val postRequest = ApiRequest("POST", "apiUrl", null, body)
+                                val postRequest =
+                                    Deprecated_ApiRequest(
+                                        "POST",
+                                        "apiUrl",
+                                        null,
+                                        body
+                                    )
                                 postRequest.execute()
                             }
 

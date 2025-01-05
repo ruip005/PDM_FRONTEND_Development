@@ -1,4 +1,4 @@
-package com.example.datingapp;
+package com.example.datingapp.Utils;
 
 import android.util.Base64;
 import org.json.JSONObject;

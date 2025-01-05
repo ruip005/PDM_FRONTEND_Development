@@ -2,6 +2,8 @@ package com.example.datingapp.API
 
 import com.example.datingapp.API.Endpoints.LoginRequest
 import com.example.datingapp.API.Endpoints.LoginResponse
+import com.example.datingapp.API.Endpoints.RegisterRequest
+import com.example.datingapp.API.Endpoints.RegisterResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,6 +21,9 @@ interface ApiService {
     // Função POST para login (com corpo)
     @POST("v1/auth/login")  // Exemplo de especificação da URL, pode ser ajustado conforme necessário
     fun login(@Body body: LoginRequest): Call<LoginResponse>
+
+    @POST("v1/auth/register")  // Exemplo de especificação da URL, pode ser ajustado conforme necessário
+    fun register(@Body body: RegisterRequest): Call<RegisterResponse>
 
     // Função POST para dados genéricos (com cabeçalhos e corpo)
     @POST
