@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">DatingApp</string>
+    <string name="app_logo">Logo da Aplicação</string>
+
+    <string name="login_title">Entrar</string>
+    <string name="email">Email</string>
+    <string name="password">Palavra-passe</string>
+    <string name="login">Entrar</string>
+    <string name="dont_have_account">Não tem uma conta? Cadastre-se</string>
+
+    <string name="register_title">Criar Conta</string>
+    <string name="name">Nome</string>
+    <string name="confirm_password">Confirmar Palavra-passe</string>
+    <string name="birthday">Data de Aniversário</string>
+    <string name="register">Registar</string>
+    <string name="already_have_account">Já tens uma conta? Inicia sessão</string>
+</resources>
