@@ -3,6 +3,7 @@ package com.example.datingapp.API
 import android.content.Context
 import com.example.datingapp.API.Endpoints.ChangePasswordRequest
 import com.example.datingapp.API.Endpoints.ChangePasswordResponse
+import com.example.datingapp.API.Endpoints.GenericResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
 import com.example.datingapp.API.Endpoints.LoginResponse
 import com.example.datingapp.API.Endpoints.RegisterRequest
@@ -13,6 +14,7 @@ import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -260,6 +262,48 @@ object ApiClient {
             }
         })
     }
+
+    fun getUserPhoto(
+        userGuid: String,
+        callback: (imageData: ByteArray?, error: String?) -> Unit
+    ) {
+        val call = apiService.getUserPhoto(userGuid)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                // Trata falha na comunicação
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    val contentType = response.headers()["Content-Type"]
+                    if (contentType == "image/jpeg") {
+                        // Caso seja uma imagem, retorna os dados em byte array
+                        val imageBytes = response.body()?.bytes()
+                        if (imageBytes != null) {
+                            callback(imageBytes, null)
+                        } else {
+                            callback(null, "Erro: Resposta de imagem está vazia.")
+                        }
+                    } else {
+                        // Caso seja um JSON, processa a mensagem de erro
+                        try {
+                            val errorResponse = Gson().fromJson(
+                                response.body()?.string(),
+                                GenericResponse::class.java
+                            )
+                            callback(null, errorResponse.message)
+                        } catch (e: Exception) {
+                            callback(null, "Erro desconhecido.")
+                        }
+                    }
+                } else {
+                    callback(null, "Erro HTTP: Código ${response.code()}")
+                }
+            }
+        })
+    }
+
 
 
 
