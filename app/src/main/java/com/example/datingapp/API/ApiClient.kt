@@ -1,10 +1,19 @@
 package com.example.datingapp.API
 
+import android.content.Context
+import com.example.datingapp.API.Endpoints.ChangePasswordRequest
+import com.example.datingapp.API.Endpoints.ChangePasswordResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
 import com.example.datingapp.API.Endpoints.LoginResponse
 import com.example.datingapp.API.Endpoints.RegisterRequest
 import com.example.datingapp.API.Endpoints.RegisterResponse
+import com.example.datingapp.API.Endpoints.UpdateUserRequest
+import com.example.datingapp.API.Endpoints.UpdateUserResponse
 import com.google.gson.Gson
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
@@ -135,6 +144,124 @@ object ApiClient {
             }
         })
     }
+
+    fun changePassword(
+        context: Context,
+        request: ChangePasswordRequest,
+        callback: (response: ChangePasswordResponse?, error: String?) -> Unit
+    ) {
+        // Obtém o token JWT armazenado
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken.isNullOrEmpty()) {
+            // Retorna um erro se o token não estiver disponível
+            callback(null, "Token JWT não encontrado.")
+            return
+        }
+
+        // Chama o endpoint
+        val call = apiService.changePassword(request, "Bearer $sessionToken")
+        call.enqueue(object : Callback<ChangePasswordResponse> {
+            override fun onFailure(call: Call<ChangePasswordResponse>, t: Throwable) {
+                // Trata falha na comunicação
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<ChangePasswordResponse>,
+                response: Response<ChangePasswordResponse>
+            ) {
+                // Verifica se a resposta HTTP é bem-sucedida
+                if (response.isSuccessful) {
+                    val changePasswordResponse = response.body()
+                    if (changePasswordResponse != null) {
+                        if (changePasswordResponse.success) {
+                            // Se for sucesso, retorna o objeto de resposta
+                            callback(changePasswordResponse, null)
+                        } else {
+                            // Se `success` for false, retorna a mensagem de erro
+                            callback(null, changePasswordResponse.message)
+                        }
+                    } else {
+                        // Corpo de resposta nulo
+                        callback(null, "Erro: Resposta inesperada.")
+                    }
+                } else {
+                    // Trata erros HTTP
+                    try {
+                        val errorResponse = Gson().fromJson(
+                            response.errorBody()?.string(),
+                            ChangePasswordResponse::class.java
+                        )
+                        callback(null, errorResponse.message)
+                    } catch (e: Exception) {
+                        callback(null, "Erro desconhecido.")
+                    }
+                }
+            }
+        })
+    }
+
+    fun updateUser(
+        context: Context,
+        request: UpdateUserRequest,
+        callback: (response: UpdateUserResponse?, error: String?) -> Unit
+    ) {
+        // Obtém o token JWT armazenado
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken.isNullOrEmpty()) {
+            // Retorna um erro se o token não estiver disponível
+            callback(null, "Token JWT não encontrado.")
+            return
+        }
+
+        // Chama o endpoint
+        val call = apiService.updateUser(request, "Bearer $sessionToken")
+        call.enqueue(object : Callback<UpdateUserResponse> {
+            override fun onFailure(call: Call<UpdateUserResponse>, t: Throwable) {
+                // Trata falha na comunicação
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<UpdateUserResponse>,
+                response: Response<UpdateUserResponse>
+            ) {
+                // Verifica se a resposta HTTP é bem-sucedida
+                if (response.isSuccessful) {
+                    val updateUserResponse = response.body()
+                    if (updateUserResponse != null) {
+                        if (updateUserResponse.success) {
+                            // Se for sucesso, retorna o objeto de resposta
+                            callback(updateUserResponse, null)
+                        } else {
+                            // Se `success` for false, retorna a mensagem de erro
+                            callback(null, updateUserResponse.message)
+                        }
+                    } else {
+                        // Corpo de resposta nulo
+                        callback(null, "Erro: Resposta inesperada.")
+                    }
+                } else {
+                    // Trata erros HTTP
+                    try {
+                        val errorResponse = Gson().fromJson(
+                            response.errorBody()?.string(),
+                            UpdateUserResponse::class.java
+                        )
+                        callback(null, errorResponse.message)
+                    } catch (e: Exception) {
+                        callback(null, "Erro desconhecido.")
+                    }
+                }
+            }
+        })
+    }
+
+
 
     fun put(url: String, headers: Map<String, String>, body: String, callback: (response: String?, error: String?) -> Unit) {
         val call = apiService.put(url, headers, body)
