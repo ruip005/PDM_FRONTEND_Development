@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.LoginRequest
+import com.example.datingapp.Utils.DataTypeUtils
 import com.example.datingapp.Utils.DialogUtils
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -42,6 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isEmpty()) emailEditText.error = "Preencha o campo de email!"
             if (password.isEmpty()) passwordEditText.error = "Preencha o campo de palavra-passe!"
+            if (email.isNotEmpty() and DataTypeUtils.isEmailValid(email).not()) emailEditText.error = "Email inválido!"
 
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 val loginRequest = LoginRequest(email, password)
@@ -64,12 +66,6 @@ class LoginActivity : AppCompatActivity() {
                                 saveSessionToken(response.token)
                                 val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
                                 startActivity(intent)
-                                DialogUtils.showNotification(
-                                    context = this@LoginActivity,
-                                    channelId = "login",
-                                    title = "Login",
-                                    message = "Login bem-sucedido!"
-                                )
                                 finish()
                             } else {
                                 println("Erro de autenticação: ${response?.message}")

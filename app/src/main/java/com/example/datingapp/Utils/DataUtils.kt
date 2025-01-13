@@ -45,4 +45,26 @@ object DataUtils {
             null
         }
     }
+    fun parseJwt(token: String): JSONObject? {
+        return try {
+            // Divide o token em partes (header, payload, signature)
+            val parts = token.split(".")
+            if (parts.size != 3) {
+                throw IllegalArgumentException("JWT inválido")
+            }
+
+            // O payload é a segunda parte do token
+            val payload = parts[1]
+
+            // Decodifica a parte do payload de Base64 para String
+            val decodedBytes = Base64.decode(payload, Base64.URL_SAFE)
+            val decodedString = String(decodedBytes)
+
+            // Converte a string JSON para JSONObject e retorna
+            JSONObject(decodedString)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
+        }
+    }
 }

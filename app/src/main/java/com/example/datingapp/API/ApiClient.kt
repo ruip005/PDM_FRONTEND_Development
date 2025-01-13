@@ -4,16 +4,22 @@ import android.content.Context
 import com.example.datingapp.API.Endpoints.ChangePasswordRequest
 import com.example.datingapp.API.Endpoints.ChangePasswordResponse
 import com.example.datingapp.API.Endpoints.GenericResponse
+import com.example.datingapp.API.Endpoints.GetProfileRequest
+import com.example.datingapp.API.Endpoints.GetProfileResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
 import com.example.datingapp.API.Endpoints.LoginResponse
 import com.example.datingapp.API.Endpoints.RegisterRequest
 import com.example.datingapp.API.Endpoints.RegisterResponse
 import com.example.datingapp.API.Endpoints.UpdateUserRequest
 import com.example.datingapp.API.Endpoints.UpdateUserResponse
+import com.example.datingapp.API.Endpoints.UploadProfileResponse
+import com.example.datingapp.Utils.DataUtils
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Retrofit
@@ -21,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 object ApiClient {
 
@@ -258,6 +265,86 @@ object ApiClient {
                     } catch (e: Exception) {
                         callback(null, "Erro desconhecido.")
                     }
+                }
+            }
+        })
+    }
+
+    fun getProfile(
+        userId: String,
+        request: GetProfileRequest,
+        callback: (response: GetProfileResponse?, error: String?) -> Unit
+    ) {
+        val call = apiService.getProfile(userId, request)
+        call.enqueue(object : Callback<GetProfileResponse> {
+            override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<GetProfileResponse>,
+                response: Response<GetProfileResponse>
+            ) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        if (it.success) {
+                            callback(it, null)
+                        } else {
+                            callback(null, it.message)
+                        }
+                    } ?: callback(null, "Erro: Resposta inesperada.")
+                } else {
+                    callback(null, "Erro HTTP: Código ${response.code()}")
+                }
+            }
+        })
+    }
+
+    fun uploadProfilePicture(
+        context: Context,
+        imageFile: File?,
+        callback: (response: UploadProfileResponse?, error: String?) -> Unit
+    ) {
+        // Obtém o token JWT armazenado
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken.isNullOrEmpty()) {
+            // Retorna um erro se o token não estiver disponível
+            callback(null, "Token JWT não encontrado.")
+            return
+        }
+
+        // Prepara a imagem como MultipartBody.Part, caso exista
+        val imagePart = imageFile?.let {
+            val requestBody = it.asRequestBody("image/jpeg".toMediaTypeOrNull())
+            MultipartBody.Part.createFormData("image", it.name, requestBody)
+        }
+
+        // Chama o endpoint
+        val call = apiService.uploadProfilePicture("Bearer $sessionToken", imagePart)
+        call.enqueue(object : Callback<UploadProfileResponse> {
+            override fun onFailure(call: Call<UploadProfileResponse>, t: Throwable) {
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<UploadProfileResponse>,
+                response: Response<UploadProfileResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val uploadResponse = response.body()
+                    if (uploadResponse != null && uploadResponse.success) {
+                        // Retorna a resposta de sucesso
+                        callback(uploadResponse, null)
+                    } else {
+                        // Trata a resposta com sucesso = false
+                        val message = uploadResponse?.message ?: "Erro: Resposta inesperada."
+                        callback(null, message)
+                    }
+                } else {
+                    // Trata erro HTTP
+                    callback(null, "Erro HTTP: Código ${response.code()}")
                 }
             }
         })

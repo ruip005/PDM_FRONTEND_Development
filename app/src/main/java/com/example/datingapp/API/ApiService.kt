@@ -2,20 +2,26 @@ package com.example.datingapp.API
 
 import com.example.datingapp.API.Endpoints.ChangePasswordRequest
 import com.example.datingapp.API.Endpoints.ChangePasswordResponse
+import com.example.datingapp.API.Endpoints.GetProfileRequest
+import com.example.datingapp.API.Endpoints.GetProfileResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
 import com.example.datingapp.API.Endpoints.LoginResponse
 import com.example.datingapp.API.Endpoints.RegisterRequest
 import com.example.datingapp.API.Endpoints.RegisterResponse
 import com.example.datingapp.API.Endpoints.UpdateUserRequest
 import com.example.datingapp.API.Endpoints.UpdateUserResponse
+import com.example.datingapp.API.Endpoints.UploadProfileResponse
+import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.HeaderMap
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Url
 
@@ -44,10 +50,25 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Call<UpdateUserResponse>
 
+    @GET("v1/user/u/{id}")
+    fun getProfile(
+        @Path("id") userId: String,
+        @Body body: GetProfileRequest,
+    ): Call<GetProfileResponse>
+
+    @Multipart
+    @POST("v1/user/upload")
+    fun uploadProfilePicture(
+        @Header("Authorization") token: String,
+        @Part image: MultipartBody.Part?
+    ): Call<UploadProfileResponse>
+
     @GET("v1/imagestest/photo/{userGuid}")
     fun getUserPhoto(
         @Path("userGuid") userGuid: String
     ): Call<ResponseBody>
+
+
 
 
     // Função POST para dados genéricos (com cabeçalhos e corpo)
