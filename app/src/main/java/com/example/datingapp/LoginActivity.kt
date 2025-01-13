@@ -3,6 +3,7 @@ package com.example.datingapp
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
@@ -36,6 +37,7 @@ class LoginActivity : AppCompatActivity() {
         val passwordEditText = findViewById<TextInputEditText>(R.id.passwordEditText)
         val loginButton = findViewById<MaterialButton>(R.id.loginButton)
         val signupTextView = findViewById<TextView>(R.id.signupTextView)
+        val loadingProgressBar = findViewById<View>(R.id.loadingProgressBar)
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString()
@@ -45,14 +47,27 @@ class LoginActivity : AppCompatActivity() {
             if (password.isEmpty()) passwordEditText.error = "Preencha o campo de palavra-passe!"
             if (email.isNotEmpty() and DataTypeUtils.isEmailValid(email).not()) emailEditText.error = "Email inválido!"
 
+            if(email.isEmpty() || password.isEmpty() || DataTypeUtils.isEmailValid(email).not()) return@setOnClickListener
+
             if (email.isNotEmpty() && password.isNotEmpty()) {
                 val loginRequest = LoginRequest(email, password)
+
+                // Inicia o loading
+                loginButton.text = ""
+                loginButton.isEnabled = false
+                loginButton.alpha = 0.5f
+                loadingProgressBar.visibility = View.VISIBLE
 
                 // Fazendo a requisição de login com Retrofit
                 CoroutineScope(Dispatchers.Main).launch {
                     ApiClient.login(loginRequest) { response, error ->
+                        // Para o loading independentemente do resultado
+                        loginButton.text = "Entrar"
+                        loginButton.isEnabled = true
+                        loginButton.alpha = 1.0f
+                        loadingProgressBar.visibility = View.GONE
+
                         if (error != null) {
-                            // Exibir erro no log e mostrar mensagem de erro
                             println("Erro: $error")
                             DialogUtils.showErrorPopup(
                                 context = this@LoginActivity,
@@ -60,7 +75,6 @@ class LoginActivity : AppCompatActivity() {
                                 message = error
                             )
                         } else {
-                            // Se a resposta for bem-sucedida, processa o login
                             if (response != null && response.success) {
                                 println("Login bem-sucedido. Token: ${response.token}")
                                 saveSessionToken(response.token)
@@ -78,13 +92,12 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 }
-
-
             } else {
                 if (email.isEmpty()) emailEditText.error = "Preencha o campo de email!"
                 if (password.isEmpty()) passwordEditText.error = "Preencha o campo de palavra-passe!"
             }
         }
+
 
         signupTextView.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
