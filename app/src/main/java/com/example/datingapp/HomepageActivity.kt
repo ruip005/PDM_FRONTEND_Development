@@ -1,44 +1,52 @@
+// Improved HomepageActivity.kt
 package com.example.datingapp
 
-import com.example.datingapp.*
 import android.annotation.SuppressLint
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.example.datingapp.API.*
+import com.example.datingapp.API.ApiClient
 import com.example.datingapp.Utils.DataUtils
 import com.example.datingapp.Utils.DialogUtils
+import com.example.datingapp.ProfileBlockView
 import java.util.Calendar
 
 class HomepageActivity : AppCompatActivity() {
+
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-        // Exemplo de botão de like/dislike
-        val likeButton = findViewById<Button>(R.id.likeButton)
-        val logoutButton = findViewById<Button>(R.id.logoutbutton)
+        val likeButton: Button = findViewById(R.id.likeButton)
+        val logoutButton: Button = findViewById(R.id.logoutbutton)
+        val profileBlock: ProfileBlockView = findViewById(R.id.profileBlock)
 
+        setupLogoutButton(logoutButton)
+        setupLikeButton(likeButton)
+        loadUserProfile(profileBlock)
+    }
+
+    private fun setupLogoutButton(logoutButton: Button) {
         logoutButton.setOnClickListener {
             logout()
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-            finish()
+            navigateToLogin()
         }
+    }
 
+    private fun setupLikeButton(likeButton: Button) {
         likeButton.setOnClickListener {
-            // Lógica para dar like
+            // Implement your like logic here
         }
+    }
 
-        //try {
-        val profileBlock = findViewById<ProfileBlockView>(R.id.profileBlock)
-        // JWT token leva sub (guid|id), name, email, birthday
-        DataUtils.parseJwt(this)?.let { jwtPayload ->
-            println("Dados do payload: $jwtPayload")
+    private fun loadUserProfile(profileBlock: ProfileBlockView) {
+        val jwtPayload = DataUtils.parseJwt(this)
+        if (jwtPayload != null) {
             val guid = jwtPayload.getString("sub")
             val name = jwtPayload.getString("name")
             val birthday = jwtPayload.getString("birthdate")
@@ -46,51 +54,61 @@ class HomepageActivity : AppCompatActivity() {
 
             ApiClient.getUserPhoto(guid) { imageData, error ->
                 if (error != null) {
-                    DialogUtils.showErrorToast(this, error)
-                    profileBlock.setProfileData(name, age, BitmapFactory.decodeResource(resources, R.drawable.ic_profile_placeholder))
+                    showErrorToast("Erro ao carregar imagem do usuário: $error")
+                    setDefaultProfileData(profileBlock, name, age)
                 } else if (imageData != null) {
                     val bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.size)
                     profileBlock.setProfileData(name, age, bitmap)
                 } else {
-                    DialogUtils.showErrorToast(this, "Erro ao carregar imagem")
-                    profileBlock.setProfileData(name, age, BitmapFactory.decodeResource(resources, R.drawable.ic_profile_placeholder))
+                    showErrorToast("Erro ao carregar imagem")
+                    setDefaultProfileData(profileBlock, name, age)
                 }
             }
+        } else {
+            showErrorToast("Erro ao carregar dados do usuário")
         }
-    /*}
-    catch (e: Exception) {
-        DialogUtils.showErrorToast(this, "Erro ao carregar perfil")
-    }*/
+    }
+
+    private fun setDefaultProfileData(profileBlock: ProfileBlockView, name: String, age: Int) {
+        val defaultImage: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_profile_placeholder)
+        profileBlock.setProfileData(name, age, defaultImage)
     }
 
     private fun logout() {
-        val sharedPreferences = this.getSharedPreferences("AppPreferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.remove("SESSION_TOKEN")
-        editor.apply()
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        sharedPreferences.edit().remove("SESSION_TOKEN").apply()
     }
+
+    private fun navigateToLogin() {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
     private fun calculateAge(birthdate: String): Int {
-        // Formato da data esperado: 2003-08-03T23:00:00.000Z
-        val birthdateParts = birthdate.split("T")[0].split("-") // Separa a data no formato ISO 8601
-        val year = birthdateParts[0].toInt()
-        val month = birthdateParts[1].toInt() - 1 // Ajusta o mês para o índice do Calendar (0-based)
-        val day = birthdateParts[2].toInt()
+        try {
+            val birthdateParts = birthdate.split("T")[0].split("-")
+            val year = birthdateParts[0].toInt()
+            val month = birthdateParts[1].toInt() - 1
+            val day = birthdateParts[2].toInt()
 
-        // Cria o calendário com a data de nascimento
-        val birthdateCalendar = Calendar.getInstance()
-        birthdateCalendar.set(year, month, day)
+            val birthdateCalendar = Calendar.getInstance().apply {
+                set(year, month, day)
+            }
+            val todayCalendar = Calendar.getInstance()
 
-        // Obter a data atual
-        val todayCalendar = Calendar.getInstance()
-
-        // Calcula a idade
-        var age = todayCalendar.get(Calendar.YEAR) - birthdateCalendar.get(Calendar.YEAR)
-
-        // Ajusta a idade caso o aniversário ainda não tenha ocorrido este ano
-        if (todayCalendar.get(Calendar.DAY_OF_YEAR) < birthdateCalendar.get(Calendar.DAY_OF_YEAR)) {
-            age--
+            var age = todayCalendar.get(Calendar.YEAR) - birthdateCalendar.get(Calendar.YEAR)
+            if (todayCalendar.get(Calendar.DAY_OF_YEAR) < birthdateCalendar.get(Calendar.DAY_OF_YEAR)) {
+                age--
+            }
+            return age
+        } catch (e: Exception) {
+            showErrorToast("Erro ao calcular idade: ${e.message}")
+            return 0
         }
+    }
 
-        return age
+    private fun showErrorToast(message: String) {
+        DialogUtils.showErrorToast(this, message)
     }
 }
