@@ -78,7 +78,8 @@ class LoginActivity : AppCompatActivity() {
                             if (response != null && response.success) {
                                 println("Login bem-sucedido. Token: ${response.token}")
                                 saveSessionToken(response.token)
-                                val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
+                                //val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
+                                val intent = Intent(this@LoginActivity, ProfilePage::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {

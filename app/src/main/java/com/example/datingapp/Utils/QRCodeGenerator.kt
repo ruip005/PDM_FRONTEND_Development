@@ -44,6 +44,11 @@ object QRCodeGenerator {
             out?.close()
         }
     }
+
+    fun hasQRCode(context: Context, fileName: String): Boolean {
+        val file = File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), fileName)
+        return file.exists()
+    }
 }
 
 /*
