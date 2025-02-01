@@ -10,4 +10,5 @@
     <color name="hintColor">#808080</color>
     <color name="textColor">#212121</color>
     <color name="errorColor">#D32F2F</color>
+    <color name="purple_500">#6200EE</color>
 </resources>

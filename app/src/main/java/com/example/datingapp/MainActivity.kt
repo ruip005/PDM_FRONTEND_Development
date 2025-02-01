@@ -10,19 +10,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Configurar o botão
-        /*
-        val goToLoginButton = findViewById<Button>(R.id.goToLoginButton)
-        goToLoginButton.setOnClickListener {
-            // Ir para a LoginActivity
-            val intent = Intent(this, LoginActivity::class.java)
-            startActivity(intent)
-        }*/
-        if (true) {
-            // Ir para a LoginActivity
-            val intent = Intent(this, LoginActivity::class.java)
+        // Verifique se o usuário já está logado
+        val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken != null) {
+            // Usuário já está logado, vá direto para a homepage ou outra tela principal
+            val intent = Intent(this, HomepageActivity::class.java)
             startActivity(intent)
             finish()
+        } else {
+            // Mostre a MainActivity (com os botões "Create Account" e "Login")
+            setupButtons()
+        }
+    }
+
+    private fun setupButtons() {
+        val createAccountButton = findViewById<Button>(R.id.createAccountButton)
+        val loginButton = findViewById<Button>(R.id.loginButton)
+
+        createAccountButton.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        loginButton.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
         }
     }
 }
