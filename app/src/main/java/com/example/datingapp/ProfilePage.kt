@@ -39,8 +39,7 @@ class ProfilePage : AppCompatActivity() {
             // Gerar e salvar QR Code
             try {
                 val userData = "https://api.triumphmc.tech/v1/user/view/$guid"
-                if (QRCodeGenerator.hasQRCode(this, fileName).not())
-                QRCodeGenerator.generateAndSaveQRCode(this, userData, fileName)
+                if (QRCodeGenerator.hasQRCode(this, fileName).not()) QRCodeGenerator.generateAndSaveQRCode(this, userData, fileName)
                 // set QR Code qrCodeBlock
 
                 val qrCodeBlock = findViewById<ImageView>(R.id.qrCodeImageView)
