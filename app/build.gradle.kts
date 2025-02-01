@@ -36,6 +36,8 @@ android {
 }
 
 dependencies {
+    implementation ("com.google.zxing:core:3.4.1") // Biblioteca core do ZXing
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0@aar")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")  // Usado para converter resposta JSON em objetos Kotlin
     implementation("com.squareup.okhttp3:okhttp:4.11.0") // Para fazer requisições HTTP
