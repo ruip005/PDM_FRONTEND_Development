@@ -1,5 +1,20 @@
 package com.example.datingapp.API.Endpoints
 
+import com.example.datingapp.API.Endpoints.*
+import com.example.datingapp.Classes.*
+
+data class GetProfileResponse(
+    val success: Boolean,
+    val message: String,
+    val user: User?,
+    val profileDetail: ProfileDetail?,
+    val userPhotos: List<UserPhotos>?,
+    val userPhoto: UserProfilePicture?
+)
+
+/*
+package com.example.datingapp.API.Endpoints
+
 data class GetProfileResponse(
     val success: Boolean,
     val message: String? = null,
@@ -51,3 +66,4 @@ data class BinaryData(
     val type: String,
     val data: List<Int>
 )
+*/

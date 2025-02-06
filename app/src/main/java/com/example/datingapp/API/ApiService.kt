@@ -56,6 +56,12 @@ interface ApiService {
         @Body body: GetProfileRequest,
     ): Call<GetProfileResponse>
 
+    @GET("v1/user/u/{id}")
+    fun getUser(
+        @Path("id") userId: String,
+        @Body body: GetProfileRequest
+    ): Call<GetProfileResponse>
+
     @Multipart
     @POST("v1/user/upload")
     fun uploadProfilePicture(

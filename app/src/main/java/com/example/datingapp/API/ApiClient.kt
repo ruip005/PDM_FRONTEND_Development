@@ -154,6 +154,68 @@ object ApiClient {
         })
     }
 
+    //
+    fun getUser(
+        context: Context,
+        userId: String,
+        request: GetProfileRequest,
+        callback: (response: GetProfileResponse?, error: String?) -> Unit
+    ) {
+        // Obtém o token JWT armazenado
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken.isNullOrEmpty()) {
+            // Retorna um erro se o token não estiver disponível
+            callback(null, "Token JWT não encontrado.")
+            return
+        }
+
+        // Chama o endpoint
+        val call = apiService.getUser(userId, request)
+        call.enqueue(object : Callback<GetProfileResponse> {
+            override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
+                // Trata falha na comunicação
+                callback(null, "Erro de Comunicação: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<GetProfileResponse>,
+                response: Response<GetProfileResponse>
+            ) {
+                // Verifica se a resposta HTTP é bem-sucedida
+                if (response.isSuccessful) {
+                    val getUserResponse = response.body()
+                    if (getUserResponse != null) {
+                        if (getUserResponse.success) {
+                            // Se for sucesso, retorna o objeto de resposta
+                            callback(getUserResponse, null)
+                        } else {
+                            // Se `success` for false, retorna a mensagem de erro
+                            callback(null, getUserResponse.message)
+                        }
+                    } else {
+                        // Corpo de resposta nulo
+                        callback(null, "Erro: Resposta inesperada.")
+                    }
+                } else {
+                    // Trata erros HTTP
+                    try {
+                        val errorResponse = Gson().fromJson(
+                            response.errorBody()?.string(),
+                            GetProfileResponse::class.java
+                        )
+                        callback(null, errorResponse.message)
+                    } catch (e: Exception) {
+                        callback(null, "Erro desconhecido.")
+                    }
+                }
+            }
+        })
+    }
+
+    //
+
     fun changePassword(
         context: Context,
         request: ChangePasswordRequest,

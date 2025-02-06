@@ -5,7 +5,7 @@ import android.app.NotificationManager
 import androidx.appcompat.app.AlertDialog
 import android.content.Context
 import android.widget.Toast
-import com.example.datingapp.RegisterActivity
+import com.example.datingapp.Activities.RegisterActivity
 
 object DialogUtils {
 

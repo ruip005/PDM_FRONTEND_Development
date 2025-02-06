@@ -1,8 +1,7 @@
 // Improved HomepageActivity.kt
-package com.example.datingapp
+package com.example.datingapp.Activities
 
 import android.annotation.SuppressLint
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -13,6 +12,7 @@ import com.example.datingapp.API.ApiClient
 import com.example.datingapp.Utils.DataUtils
 import com.example.datingapp.Utils.DialogUtils
 import com.example.datingapp.ProfileBlockView
+import com.example.datingapp.R
 import java.util.Calendar
 
 class HomepageActivity : AppCompatActivity() {
@@ -70,7 +70,9 @@ class HomepageActivity : AppCompatActivity() {
     }
 
     private fun setDefaultProfileData(profileBlock: ProfileBlockView, name: String, age: Int) {
-        val defaultImage: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_profile_placeholder)
+        val defaultImage: Bitmap = BitmapFactory.decodeResource(resources,
+            R.drawable.ic_profile_placeholder
+        )
         profileBlock.setProfileData(name, age, defaultImage)
     }
 

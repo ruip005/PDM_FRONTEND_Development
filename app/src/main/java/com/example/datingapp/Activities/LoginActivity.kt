@@ -1,4 +1,4 @@
-package com.example.datingapp
+package com.example.datingapp.Activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.LoginRequest
+import com.example.datingapp.ProfilePage
+import com.example.datingapp.R
 import com.example.datingapp.Utils.DataTypeUtils
 import com.example.datingapp.Utils.DialogUtils
 import com.google.android.material.button.MaterialButton

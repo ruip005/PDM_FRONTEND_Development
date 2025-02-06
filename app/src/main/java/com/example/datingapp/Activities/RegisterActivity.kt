@@ -1,4 +1,4 @@
-package com.example.datingapp
+package com.example.datingapp.Activities
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.RegisterRequest
+import com.example.datingapp.R
 import com.example.datingapp.Utils.DataTypeUtils
 import com.example.datingapp.Utils.DialogUtils
 import com.google.android.material.textfield.TextInputEditText
