@@ -2,6 +2,7 @@ package com.example.datingapp.API
 
 import com.example.datingapp.API.Endpoints.ChangePasswordRequest
 import com.example.datingapp.API.Endpoints.ChangePasswordResponse
+import com.example.datingapp.API.Endpoints.GetNewUserGuidResponse
 import com.example.datingapp.API.Endpoints.GetProfileRequest
 import com.example.datingapp.API.Endpoints.GetProfileResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
@@ -74,8 +75,17 @@ interface ApiService {
         @Path("userGuid") userGuid: String
     ): Call<ResponseBody>
 
+    @GET("v1/user/search")
+    fun getNewUserGuid(
+        @Header("Authorization") token: String
+    ): Call<GetNewUserGuidResponse>
 
 
+    @POST("v1/user/decision")
+    fun decisionUser(
+        @Header("Authorization") token: String,
+        @Body body: String
+    ): Call<String>
 
     // Função POST para dados genéricos (com cabeçalhos e corpo)
     @POST

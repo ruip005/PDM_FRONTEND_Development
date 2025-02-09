@@ -8,15 +8,12 @@ import android.os.Environment
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.Utils.DataUtils
 import com.example.datingapp.Utils.DialogUtils
-import com.example.datingapp.Utils.DialogUtils.showErrorToast
 import java.util.Calendar
 
-class ProfilePage : AppCompatActivity() {
+class ProfilePage_Block : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

@@ -66,17 +66,92 @@
                 android:id="@+id/profileHeight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Altura: 180 cm"
+                android:text="Altura: n/a cm"
                 android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/profileQualifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Qualificações: Licenciatura"
+                android:text="Qualificações: n/a"
                 android:textSize="16sp" />
 
-            <!-- Adicione mais TextViews para os outros campos do perfil -->
+            <TextView
+                android:id="@+id/profileSign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Signo: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileChildren"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Filhos: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileCommunicationStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estilo de Comunicação: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileLoveType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipo de Amor: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileLookingFor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="À procura de: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileAnimals"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Animais: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileSmoke"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fuma: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileDrink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bebe: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileGym"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ginásio: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileSexualOrientation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orientação Sexual: n/a"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/profileSchool"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Escola: n/a"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </ScrollView>

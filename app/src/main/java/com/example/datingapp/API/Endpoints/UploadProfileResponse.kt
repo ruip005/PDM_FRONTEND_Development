@@ -8,7 +8,7 @@ data class UploadProfileResponse(
 
 data class UploadedImageData(
     val id: Int,
-    val binary: BinaryData,
+    val binary: ByteArray, // Binary Data
     val updatedAt: String,
     val createdAt: String
 )

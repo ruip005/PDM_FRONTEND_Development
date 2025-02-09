@@ -4,6 +4,7 @@ import android.content.Context
 import com.example.datingapp.API.Endpoints.ChangePasswordRequest
 import com.example.datingapp.API.Endpoints.ChangePasswordResponse
 import com.example.datingapp.API.Endpoints.GenericResponse
+import com.example.datingapp.API.Endpoints.GetNewUserGuidResponse
 import com.example.datingapp.API.Endpoints.GetProfileRequest
 import com.example.datingapp.API.Endpoints.GetProfileResponse
 import com.example.datingapp.API.Endpoints.LoginRequest
@@ -453,8 +454,78 @@ object ApiClient {
         })
     }
 
+    fun getNewUserGuid(
+        context: Context,
+        callback: (newGuid: String?, error: String?) -> Unit
+    ) {
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
 
+        if (sessionToken.isNullOrEmpty()) {
+            callback(null, "Token JWT não encontrado.")
+            return
+        }
 
+        val call = apiService.getNewUserGuid("Bearer $sessionToken")
+        call.enqueue(object : Callback<GetNewUserGuidResponse> {
+            override fun onFailure(call: Call<GetNewUserGuidResponse>, t: Throwable) {
+                callback(null, "Erro ao obter novo GUID: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<GetNewUserGuidResponse>,
+                response: Response<GetNewUserGuidResponse>
+            ) {
+                if (response.isSuccessful) {
+                    val newGuidResponse = response.body()
+                    if (newGuidResponse?.success == true) {
+                        callback(newGuidResponse.newGuid, null)
+                    } else {
+                        callback(null, "Erro ao obter GUID: ${newGuidResponse?.message}")
+                    }
+                } else {
+                    callback(null, "Erro desconhecido ao obter GUID.")
+                }
+            }
+        })
+    }
+
+    // Dislike or Like user
+    fun decisionUser(
+        context: Context,
+        userGuid: String,
+        decision: String,
+        callback: (error: String?) -> Unit
+    ) {
+        val sharedPreferences = context.getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
+        val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
+
+        if (sessionToken.isNullOrEmpty()) {
+            callback("Token JWT não encontrado.")
+            return
+        }
+        // userIdentificator, decision
+        val body = JSONObject()
+        body.put("userIdentificator", userGuid)
+        body.put("decision", decision)
+        val call = apiService.decisionUser("Bearer $sessionToken", body.toString())
+        call.enqueue(object : Callback<String> {
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                callback("Erro ao enviar decisão: ${t.message}")
+            }
+
+            override fun onResponse(
+                call: Call<String>,
+                response: Response<String>
+            ) {
+                if (response.isSuccessful) {
+                    callback(null)
+                } else {
+                    callback("Erro desconhecido ao enviar decisão.")
+                }
+            }
+        })
+    }
 
     fun put(url: String, headers: Map<String, String>, body: String, callback: (response: String?, error: String?) -> Unit) {
         val call = apiService.put(url, headers, body)

@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.LoginRequest
-import com.example.datingapp.ProfilePage
+import com.example.datingapp.ProfilePage_Block
 import com.example.datingapp.R
 import com.example.datingapp.Utils.DataTypeUtils
 import com.example.datingapp.Utils.DialogUtils
@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
                                 println("Login bem-sucedido. Token: ${response.token}")
                                 saveSessionToken(response.token)
                                 //val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
-                                val intent = Intent(this@LoginActivity, ProfilePage::class.java)
+                                val intent = Intent(this@LoginActivity, ProfilePage_Block::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {

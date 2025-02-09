@@ -25,14 +25,14 @@
         android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Swipe Right®"
+        android:layout_marginTop="16dp"
+        android:text="Swipe ®"
+        android:textColor="@android:color/white"
         android:textSize="32sp"
         android:textStyle="bold"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/appLogo"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appLogo" />
 
     <!-- Botão Criar Conta -->
 

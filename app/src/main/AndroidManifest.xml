@@ -21,13 +21,13 @@
             android:name=".item_additional_photo"
             android:exported="false" />
         <activity
-            android:name=".rating"
+            android:name=".Rating"
             android:exported="false" />
         <activity
             android:name=".CardView"
             android:exported="false" />
         <activity
-            android:name=".ProfilePage"
+            android:name=".ProfilePage_Block"
             android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"
