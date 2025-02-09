@@ -61,6 +61,14 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         registerButton.setOnClickListener {
+            // Retirar todos os erros
+            nameEditText.error = null
+            emailEditText.error = null
+            passwordEditText.error = null
+            confirmPasswordEditText.error = null
+            birthDateEditText.error
+            genderEditText.error = null
+
             val name = nameEditText.text.toString()
             val email = emailEditText.text.toString()
             val password = passwordEditText.text.toString()
