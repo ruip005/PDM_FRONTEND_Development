@@ -88,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
                             )
                         }
                     } else {
-                        runOnUiThread {
+                        //runOnUiThread {
                             DialogUtils.showSuccessPopup(
                                 context = this@RegisterActivity,
                                 title = "Registo Concluído",
@@ -97,7 +97,7 @@ class RegisterActivity : AppCompatActivity() {
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
                             finish()
-                        }
+                        //}
                     }
                 }
             } else {

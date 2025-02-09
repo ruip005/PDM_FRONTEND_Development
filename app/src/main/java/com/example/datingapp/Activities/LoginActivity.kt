@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.LoginRequest
-import com.example.datingapp.ProfilePage_Block
 import com.example.datingapp.R
 import com.example.datingapp.Utils.DataTypeUtils
 import com.example.datingapp.Utils.DialogUtils
@@ -28,8 +27,8 @@ class LoginActivity : AppCompatActivity() {
         val token = getSessionToken()
 
         if (token != null) {
-            // Se já tiver um token salvo, vai direto para a homepage
-            val intent = Intent(this, HomepageActivity::class.java)
+            // Se jaá tiver um token salvo, vai direto para a homepage
+            val intent = Intent(this, ProfilePage::class.java)
             startActivity(intent)
             println("Token encontrado: $token")
             finish()
@@ -60,7 +59,7 @@ class LoginActivity : AppCompatActivity() {
                 loginButton.alpha = 0.5f
                 loadingProgressBar.visibility = View.VISIBLE
 
-                // Fazendo a requisição de login com Retrofit
+                // Fazendo a req de login
                 CoroutineScope(Dispatchers.Main).launch {
                     ApiClient.login(loginRequest) { response, error ->
                         // Para o loading independentemente do resultado
@@ -81,7 +80,7 @@ class LoginActivity : AppCompatActivity() {
                                 println("Login bem-sucedido. Token: ${response.token}")
                                 saveSessionToken(response.token)
                                 //val intent = Intent(this@LoginActivity, HomepageActivity::class.java)
-                                val intent = Intent(this@LoginActivity, ProfilePage_Block::class.java)
+                                val intent = Intent(this@LoginActivity, ProfilePage::class.java)
                                 startActivity(intent)
                                 finish()
                             } else {
@@ -119,6 +118,6 @@ class LoginActivity : AppCompatActivity() {
         val sharedPreferences = this.getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val editor = sharedPreferences.edit()
         editor.putString("SESSION_TOKEN", token)
-        editor.apply() // Salva o token no SharedPreferences
+        editor.apply() // Ssalva o token no SharedPreferences
     }
 }

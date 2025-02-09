@@ -11,17 +11,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Verifique se o usuário já está logado
+        // Verifique se o user ja esta logado
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
 
         if (sessionToken != null) {
-            // Usuário já está logado, vá direto para a homepage ou outra tela principal
+            // user já está logado, vá direto para a homepage ou outrasa tela principal
             val intent = Intent(this, HomepageActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            // Mostre a MainActivity (com os botões "Create Account" e "Login")
+            // Mostre a MainActivity (com os botoess "Create Account" e "Login")
             setupButtons()
         }
     }

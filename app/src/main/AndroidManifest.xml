@@ -15,6 +15,9 @@
         android:theme="@style/Theme.DatingApp"
         tools:targetApi="31">
         <activity
+            android:name=".scanner_block"
+            android:exported="false" />
+        <activity
             android:name=".Activities.ProfileActivity"
             android:exported="false" />
         <activity
@@ -27,7 +30,7 @@
             android:name=".CardView"
             android:exported="false" />
         <activity
-            android:name=".ProfilePage_Block"
+            android:name=".Activities.ProfilePage"
             android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"
