@@ -2,6 +2,7 @@ package com.example.datingapp.Activities
 
 import android.content.Context
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -105,14 +106,14 @@ class ProfileActivity : AppCompatActivity() {
             binding.profileSchool.text = "Escola: ${it.school}"
         }
 
-        val likeBtn = binding.likeButton // fix me
+        val likeBtn = findViewById<Button>(R.id.dislikeButton)
         likeBtn.setOnClickListener {
-            decisionUser(user.guid, DecisionType.smash)
+            decisionUser(user.guid.toString(), DecisionType.smash)
         }
 
-        val passBtn = binding.dislikeButton // fix me
+        val passBtn = findViewById<Button>(R.id.dislikeButton)
         passBtn.setOnClickListener {
-            decisionUser(user.guid, DecisionType.pass)
+            decisionUser(user.guid.toString(), DecisionType.pass)
         }
 
         user.photos?.let { photos ->
