@@ -1,4 +1,4 @@
-package com.example.datingapp.activities
+package com.example.datingapp.Activities
 
 import android.os.Bundle
 import android.os.Message

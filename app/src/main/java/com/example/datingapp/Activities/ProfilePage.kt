@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.os.Environment
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
@@ -32,6 +33,25 @@ class ProfilePage : AppCompatActivity() {
 
         searchBtn.setOnClickListener {
             val intent = Intent(this, Rating::class.java)
+            startActivity(intent)
+        }
+
+        val menuProfile = findViewById<LinearLayout>(R.id.menuMeuPerfil)
+        val menuRating = findViewById<LinearLayout>(R.id.menuRating)
+        val menuChat = findViewById<LinearLayout>(R.id.menuChat)
+
+        menuProfile.setOnClickListener {
+            val intent = Intent(this, ProfilePage::class.java)
+            startActivity(intent)
+        }
+
+        menuRating.setOnClickListener {
+            val intent = Intent(this, Rating::class.java)
+            startActivity(intent)
+        }
+
+        menuChat.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
 

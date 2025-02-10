@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
 
         if (sessionToken != null) {
             // user já está logado, vá direto para a homepage ou outrasa tela principal
-            val intent = Intent(this, HomepageActivity::class.java)
+            val intent = Intent(this, ProfilePage::class.java)
             startActivity(intent)
             finish()
         } else {
