@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -15,7 +20,13 @@
         android:theme="@style/Theme.DatingApp"
         tools:targetApi="31">
         <activity
-            android:name=".scanner_block"
+            android:name=".userChat"
+            android:exported="false" />
+        <activity
+            android:name=".Activities.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".qr_scanner"
             android:exported="false" />
         <activity
             android:name=".Activities.ProfileActivity"
@@ -25,9 +36,6 @@
             android:exported="false" />
         <activity
             android:name=".Rating"
-            android:exported="false" />
-        <activity
-            android:name=".CardView"
             android:exported="false" />
         <activity
             android:name=".Activities.ProfilePage"

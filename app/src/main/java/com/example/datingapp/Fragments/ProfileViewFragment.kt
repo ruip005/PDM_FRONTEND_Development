@@ -1,4 +1,4 @@
-package com.example.datingapp
+package com.example.datingapp.Fragments
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,8 +7,9 @@ import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.example.datingapp.R
 
-class ProfileBlockView @JvmOverloads constructor(
+class ProfileViewFragment @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

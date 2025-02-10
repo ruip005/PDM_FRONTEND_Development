@@ -4,7 +4,6 @@ import QRCodeGenerator
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Build.VERSION_CODES.S
 import android.os.Bundle
 import android.os.Environment
 import android.widget.Button
@@ -12,12 +11,11 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
-import com.example.datingapp.ProfileBlockView
+import com.example.datingapp.Fragments.ProfileViewFragment
 import com.example.datingapp.R
 import com.example.datingapp.Rating
 import com.example.datingapp.Utils.DataUtils
 import com.example.datingapp.Utils.DialogUtils
-import com.example.datingapp.scanner_block
 import java.util.Calendar
 
 class ProfilePage : AppCompatActivity() {
@@ -26,7 +24,7 @@ class ProfilePage : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_my_profile_page)
 
-        val profileBlock: ProfileBlockView = findViewById(R.id.profileBlock)
+        val profileBlock: ProfileViewFragment = findViewById(R.id.profileBlock)
 
         loadUserProfile(profileBlock)
 
@@ -37,14 +35,14 @@ class ProfilePage : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val openScanner = findViewById<ImageView>(R.id.scanQrCodeIcon)
-        openScanner.setOnClickListener {
-            val intent = Intent(this, scanner_block::class.java)
-            startActivity(intent)
-        }
+        //val openScanner = findViewById<ImageView>(R.id.scanQrCodeIcon)
+        //openScanner.setOnClickListener {
+        //    val intent = Intent(this, scanner_block::class.java)
+        //    startActivity(intent)
+        //}
     }
 
-    private fun loadUserProfile(profileBlock: ProfileBlockView) {
+    private fun loadUserProfile(profileBlock: ProfileViewFragment) {
         val jwtPayload = DataUtils.parseJwt(this)
         if (jwtPayload != null) {
             val guid = jwtPayload.getString("sub")
@@ -83,7 +81,7 @@ class ProfilePage : AppCompatActivity() {
         }
     }
 
-    private fun setDefaultProfileData(profileBlock: ProfileBlockView, name: String, age: Int) {
+    private fun setDefaultProfileData(profileBlock: ProfileViewFragment, name: String, age: Int) {
         val defaultImage: Bitmap = BitmapFactory.decodeResource(resources,
             R.drawable.ic_profile_placeholder
         )
