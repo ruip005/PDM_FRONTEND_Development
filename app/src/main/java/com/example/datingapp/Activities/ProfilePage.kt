@@ -11,7 +11,7 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.example.datingapp.API.ApiClient
-import com.example.datingapp.Fragments.ProfileViewFragment
+import com.example.datingapp.ProfileBlockView
 import com.example.datingapp.R
 import com.example.datingapp.Rating
 import com.example.datingapp.Utils.DataUtils
@@ -24,7 +24,7 @@ class ProfilePage : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_my_profile_page)
 
-        val profileBlock: ProfileViewFragment = findViewById(R.id.profileBlock)
+        val profileBlock: ProfileBlockView = findViewById(R.id.profileBlock)
 
         loadUserProfile(profileBlock)
 
@@ -42,7 +42,7 @@ class ProfilePage : AppCompatActivity() {
         //}
     }
 
-    private fun loadUserProfile(profileBlock: ProfileViewFragment) {
+    private fun loadUserProfile(profileBlock: ProfileBlockView) {
         val jwtPayload = DataUtils.parseJwt(this)
         if (jwtPayload != null) {
             val guid = jwtPayload.getString("sub")
@@ -81,7 +81,7 @@ class ProfilePage : AppCompatActivity() {
         }
     }
 
-    private fun setDefaultProfileData(profileBlock: ProfileViewFragment, name: String, age: Int) {
+    private fun setDefaultProfileData(profileBlock: ProfileBlockView, name: String, age: Int) {
         val defaultImage: Bitmap = BitmapFactory.decodeResource(resources,
             R.drawable.ic_profile_placeholder
         )
