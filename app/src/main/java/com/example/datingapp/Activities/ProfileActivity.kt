@@ -3,6 +3,7 @@ package com.example.datingapp.Activities
 import android.content.Context
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -10,30 +11,33 @@ import com.example.datingapp.API.ApiClient
 import com.example.datingapp.API.Endpoints.GetProfileRequest
 import com.example.datingapp.R
 import com.example.datingapp.adapters.AdditionalPhotosAdapter
-import com.example.datingapp.databinding.ActivityProfileBinding
-import com.example.datingapp.Classes.*
+import com.example.datingapp.databinding.ActivityRatingBinding
 import com.example.datingapp.Utils.DialogUtils
-import java.util.*
+import com.example.datingapp.Classes.*
 
-class ProfileActivity : AppCompatActivity() {
+class Rating : AppCompatActivity() {
 
-    private lateinit var binding: ActivityProfileBinding
+    private lateinit var binding: ActivityRatingBinding
     private val sharedPreferences by lazy {
         getSharedPreferences("AppPreferences", Context.MODE_PRIVATE)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityProfileBinding.inflate(layoutInflater)
+        binding = ActivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userGuid = getUserGuid() // Obtém ou gera um novo GUID
+        // Verifica se há um userGuid disponível
+        val userGuid = getUserGuid()
 
         if (userGuid == null) {
-            fetchNewUserGuid() // Se não existir, obtém um novo GUID
+            fetchNewUserGuid() // Se não existir, busca um novo GUID
         } else {
             loadUserProfile(userGuid) // Se já existir, carrega o perfil
         }
+
+        // Configura os botões de decisão
+        setupDecisionButtons()
     }
 
     private fun getUserGuid(): String? {
@@ -49,7 +53,7 @@ class ProfileActivity : AppCompatActivity() {
             if (error != null) {
                 DialogUtils.showErrorPopup(this, "Erro ao obter GUID", error)
             } else if (newGuid != null) {
-                saveUserGuid(newGuid) // Guarda o novo GUID
+                saveUserGuid(newGuid) // Salva o novo GUID
                 loadUserProfile(newGuid) // Carrega o perfil com o novo GUID
             }
         }
@@ -69,26 +73,15 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private fun decisionUser(userGuid: String, decision: DecisionType) {
-        ApiClient.decisionUser(this,
-            userGuid,
-            decision.toString()
-        ) { error ->
-            if (error != null) {
-                DialogUtils.showErrorPopup(this, "Erro ao passar utilizador", error)
-            } else {
-                DialogUtils.showSuccessToast(this, if (decision == DecisionType.smash) "Smash!" else "Pass!")
-            }
-        }
-    }
-
     private fun displayUserProfile(user: User) {
         binding.profileName.text = user.name
 
+        // Carrega a imagem do perfil
         Glide.with(this)
             .load(user.profilePicture?.binary)
             .into(binding.profileImage)
 
+        // Exibe os detalhes do perfil
         val profileDetail = user.profileDetail
         profileDetail?.let {
             binding.profileHeight.text = "Altura: ${it.height} cm"
@@ -106,16 +99,7 @@ class ProfileActivity : AppCompatActivity() {
             binding.profileSchool.text = "Escola: ${it.school}"
         }
 
-        val likeBtn = findViewById<Button>(R.id.dislikeButton)
-        likeBtn.setOnClickListener {
-            decisionUser(user.guid.toString(), DecisionType.smash)
-        }
-
-        val passBtn = findViewById<Button>(R.id.dislikeButton)
-        passBtn.setOnClickListener {
-            decisionUser(user.guid.toString(), DecisionType.pass)
-        }
-
+        // Configura o RecyclerView para fotos adicionais
         user.photos?.let { photos ->
             val photoUrls = photos.map { it.photoBinary.toString() }
             val adapter = AdditionalPhotosAdapter(photoUrls)
@@ -123,8 +107,38 @@ class ProfileActivity : AppCompatActivity() {
             binding.additionalPhotosRecyclerView.adapter = adapter
         }
     }
-}
 
+    private fun setupDecisionButtons() {
+        binding.dislikeButton.setOnClickListener {
+            val userGuid = getUserGuid()
+            if (userGuid != null) {
+                decisionUser(userGuid, DecisionType.pass)
+            } else {
+                Toast.makeText(this, "Erro: GUID do user não encontrado.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        binding.likeButton.setOnClickListener {
+            val userGuid = getUserGuid()
+            if (userGuid != null) {
+                decisionUser(userGuid, DecisionType.smash)
+            } else {
+                Toast.makeText(this, "Erro: GUID do user não encontrado.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun decisionUser(userGuid: String, decision: DecisionType) {
+        ApiClient.decisionUser(this, userGuid, decision.toString()) { error ->
+            if (error != null) {
+                DialogUtils.showErrorPopup(this, "Erro ao enviar decisão", error)
+            } else {
+                Toast.makeText(this, if (decision == DecisionType.smash) "Smash!" else "Pass!", Toast.LENGTH_SHORT).show()
+                fetchNewUserGuid() // Busca um novo perfil após a decisão
+            }
+        }
+    }
+}
 
 enum class DecisionType {
     smash, pass
