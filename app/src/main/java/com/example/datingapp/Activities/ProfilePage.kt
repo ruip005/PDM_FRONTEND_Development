@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.datingapp.Fragments.QrScannerFragment
 import com.example.datingapp.R
-import com.example.datingapp.Rating
 
 class ProfilePage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +34,7 @@ class ProfilePage : AppCompatActivity() {
         }
 
         menuRating.setOnClickListener {
-            val intent = Intent(this, Rating::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
 

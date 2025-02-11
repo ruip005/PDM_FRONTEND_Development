@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Rating">
+    tools:context=".Activities.ProfileActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -62,6 +62,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
+            <!-- TextViews dos detalhes do perfil -->
             <TextView
                 android:id="@+id/profileHeight"
                 android:layout_width="wrap_content"
@@ -82,70 +83,60 @@
                 android:layout_height="wrap_content"
                 android:text="Signo: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileChildren"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Crianças: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileCommunicationStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Estilo de comunicação: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileLoveType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tipo de amor: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileLookingFor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Procurando: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileAnimals"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Animais: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileSmoke"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Fuma: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileDrink"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Bebe: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileGym"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ginásio: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileSexualOrientation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Orientação sexual: null"
                 android:textSize="16sp" />
-
             <TextView
                 android:id="@+id/profileSchool"
                 android:layout_width="wrap_content"
@@ -153,45 +144,45 @@
                 android:text="Escola: null"
                 android:textSize="16sp" />
 
-
         </LinearLayout>
     </ScrollView>
 
+    <!-- Botões de decisão -->
     <LinearLayout
         android:id="@+id/buttonContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginBottom="16dp"
+    android:orientation="horizontal"
+    app:layout_constraintBottom_toTopOf="@id/menuPrincipal"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/dislikeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Passar"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:layout_marginEnd="16dp" />
-
-        <Button
-            android:id="@+id/likeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Gosto"
-            android:backgroundTint="@android:color/holo_green_light" />
-
-    </LinearLayout>
-
-    <include
-        layout="@layout/layout_menu_principal"
-        android:id="@+id/menuPrincipal"
-        android:layout_width="0dp"
+    <Button
+        android:id="@+id/dislikeButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        android:text="Passar"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:layout_marginEnd="16dp" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/likeButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gosto"
+        android:backgroundTint="@android:color/holo_green_light" />
+
+</LinearLayout>
+
+    <!-- Menu no fundo da tela -->
+<include
+layout="@layout/layout_menu_principal"
+android:id="@+id/menuPrincipal"
+android:layout_width="0dp"
+android:layout_height="wrap_content"
+app:layout_constraintBottom_toBottomOf="parent"
+app:layout_constraintStart_toStartOf="parent"
+app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

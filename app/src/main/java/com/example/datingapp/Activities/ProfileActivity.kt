@@ -15,7 +15,7 @@ import com.example.datingapp.databinding.ActivityRatingBinding
 import com.example.datingapp.Utils.DialogUtils
 import com.example.datingapp.Classes.*
 
-class Rating : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRatingBinding
     private val sharedPreferences by lazy {
