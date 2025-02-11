@@ -10,7 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -21,7 +21,7 @@ import com.example.datingapp.R
 
 class QrScannerFragment : Fragment() {
 
-    private lateinit var btnScanQrCode: Button
+    private lateinit var btnScanQrCode: ImageView // Altere para ImageView
     private lateinit var tvScanResult: TextView
 
     override fun onCreateView(
@@ -32,10 +32,10 @@ class QrScannerFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_qr_scanner, container, false)
 
         // Inicializar views
-        btnScanQrCode = view.findViewById(R.id.btnScanQrCode)
+        btnScanQrCode = view.findViewById(R.id.btnScanQrCode) // Agora é um ImageView
         tvScanResult = view.findViewById(R.id.tvScanResult)
 
-        // Configurar o botão para iniciar o scanner
+        // Configurar o ImageView para iniciar o scanner
         btnScanQrCode.setOnClickListener {
             checkCameraPermission()
         }

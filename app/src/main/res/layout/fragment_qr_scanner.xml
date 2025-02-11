@@ -4,11 +4,17 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <Button
+    <!-- Substitua o Button por um ImageView -->
+    <ImageView
         android:id="@+id/btnScanQrCode"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Scan QR Code" />
+        android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:src="@drawable/ic_scan"
+    android:contentDescription="Scan QR Code"
+    android:padding="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless" />
 
     <TextView
         android:id="@+id/tvScanResult"
