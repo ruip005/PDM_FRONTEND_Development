@@ -1,8 +1,8 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@android:color/white"
+    android:elevation="4dp">
 
     <!-- Menu Meu Perfil -->
     <LinearLayout
@@ -38,7 +38,8 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/menuMeuPerfil">
 
         <ImageView
             android:layout_width="24dp"
@@ -63,7 +64,8 @@
         android:clickable="true"
         android:focusable="true"
         android:padding="8dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        android:layout_below="@id/menuRating">
 
         <ImageView
             android:layout_width="24dp"
@@ -77,5 +79,4 @@
             android:textSize="18sp"
             android:layout_marginStart="16dp" />
     </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>
