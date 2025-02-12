@@ -27,6 +27,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import com.example.datingapp.API.Endpoints.Message
+import com.example.datingapp.API.Endpoints.SwipeResponse
 
 object ApiClient {
 
@@ -49,14 +50,15 @@ object ApiClient {
     // Métodos para a nova API
     fun getMessages(callback: (messages: List<Message>?, error: String?) -> Unit) {
         val call = swipeApiService.getMessages()
-        call.enqueue(object : Callback<List<Message>> {
-            override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+        call.enqueue(object : Callback<SwipeResponse> {
+            override fun onFailure(call: Call<SwipeResponse>, t: Throwable) {
                 callback(null, "Erro ao buscar mensagens: ${t.message}")
             }
 
-            override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+            override fun onResponse(call: Call<SwipeResponse>, response: Response<SwipeResponse>) {
                 if (response.isSuccessful) {
-                    callback(response.body(), null)
+                    val messages = response.body()?.MessagesList
+                    callback(messages, null)
                 } else {
                     callback(null, "Erro ao buscar mensagens: ${response.message()}")
                 }

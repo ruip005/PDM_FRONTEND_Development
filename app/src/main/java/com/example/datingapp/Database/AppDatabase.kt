@@ -21,10 +21,13 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "chat_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Apaga e recria a base de dados se houver erro
+                    .build()
                 INSTANCE = instance
                 instance
             }
         }
+
     }
 }

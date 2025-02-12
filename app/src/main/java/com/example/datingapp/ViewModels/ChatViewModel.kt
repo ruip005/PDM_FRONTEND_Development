@@ -1,30 +1,37 @@
 package com.example.datingapp.ViewModels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.datingapp.Database.AppDatabase
-import com.example.datingapp.Database.Message
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.datingapp.API.ApiClient
+import com.example.datingapp.API.Endpoints.Message
 
-class ChatViewModel(application: Application) : AndroidViewModel(application) {
+class ChatViewModel : ViewModel() {
 
-    private val database = AppDatabase.getDatabase(application)
-    private val messageDao = database.messageDao()
+    private val _messages = MutableLiveData<List<Message>>()
+    val messages: LiveData<List<Message>> get() = _messages
 
-    val allMessages: LiveData<List<Message>> = messageDao.getAllMessages()
+    private val _errorMessage = MutableLiveData<String>()
+    val errorMessage: LiveData<String> get() = _errorMessage
 
-    fun insertMessage(message: Message) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageDao.insert(message)
+    fun loadMessages() {
+        ApiClient.getMessages { messages, error ->
+            if (error != null) {
+                _errorMessage.value = error ?: "Unknown error" // Notifica sobre o erro
+            } else {
+                _messages.value = messages ?: emptyList() // Atualiza a lista de mensagens
+            }
         }
     }
 
-    fun insertMessages(messages: List<Message>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            messageDao.insertAll(messages)
+    fun sendMessage(message: Message) {
+        ApiClient.sendMessage(message) { response, error ->
+            if (error != null) {
+                _errorMessage.value = error ?: "Unknown error" // Notifica sobre o erro
+            } else {
+                // Recarrega as mensagens após enviar uma nova
+                loadMessages()
+            }
         }
     }
 }

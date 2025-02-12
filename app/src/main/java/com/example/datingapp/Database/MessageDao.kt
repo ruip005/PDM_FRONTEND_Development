@@ -15,5 +15,7 @@ interface MessageDao {
     suspend fun insertAll(messages: List<Message>) // Adicione este método
 
     @Query("SELECT * FROM messages ORDER BY dateTime ASC")
-    fun getAllMessages(): LiveData<List<Message>>
+    fun getAllMessages(): LiveData<List<Message>> // Certifica-te que não há nullable types
+
+
 }
