@@ -67,6 +67,9 @@ dependencies {
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
+    implementation ("androidx.drawerlayout:drawerlayout:1.1.1")
+    implementation ("com.google.android.material:material:1.9.0")
+
     // Dependências padrão do Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

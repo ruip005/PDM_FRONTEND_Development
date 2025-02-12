@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">DatingApp</string>
     <string name="app_logo">Logo da Aplicação</string>
 
     <string name="login_title">Entrar</string>
@@ -15,6 +14,9 @@
     <string name="register">Registar</string>
     <string name="already_have_account">Já tens uma conta? Inicia sessão</string>
     <string name="google_play_badge">Get it on Google Play</string>
+    <string name="app_name">Swipe</string>
+    <string name="navigation_drawer_open">Abrir Menu</string>
+    <string name="navigation_drawer_close">Fechar Menu</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

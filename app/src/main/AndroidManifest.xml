@@ -37,6 +37,7 @@
             android:exported="false" />
         <activity
             android:name=".Activities.ProfilePage"
+            android:launchMode="singleTask"
             android:exported="false" />
         <activity
             android:name=".Activities.RegisterActivity"

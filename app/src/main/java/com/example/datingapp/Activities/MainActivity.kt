@@ -11,35 +11,40 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Verifique se o user ja esta logado
+        // Verifica se o utilizador já está logado ao iniciar a aplicação
         val sharedPreferences = getSharedPreferences("AppPreferences", MODE_PRIVATE)
         val sessionToken = sharedPreferences.getString("SESSION_TOKEN", null)
 
         if (sessionToken != null) {
-            // user já está logado, vá direto para a homepage ou outrasa tela principal
+            // Se houver um token de sessão, o utilizador é redirecionado para a página principal (ProfilePage)
             val intent = Intent(this, ProfilePage::class.java)
             startActivity(intent)
-            finish()
+            finish() // Fecha esta activity para impedir que o utilizador volte à tela inicial pressionando "Voltar"
         } else {
-            // Mostre a MainActivity (com os botoess "Create Account" e "Login")
+            // Se não houver um token, mantém o utilizador nesta tela e exibe os botões de "Criar Conta" e "Login"
             setupButtons()
         }
     }
 
+    /**
+     * Configura os botões "Criar Conta" e "Login" na tela inicial.
+     */
     private fun setupButtons() {
         val createAccountButton = findViewById<Button>(R.id.createAccountButton)
         val loginButton = findViewById<Button>(R.id.loginButton)
 
+        // Redireciona o utilizador para a tela de registo ao clicar em "Criar Conta"
         createAccountButton.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
-            finish()
+            finish() // Fecha esta activity para evitar que o utilizador volte ao ecrã inicial
         }
 
+        // Redireciona o utilizador para a tela de login ao clicar em "Login"
         loginButton.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
-            finish()
+            finish() // Fecha esta activity para impedir que o utilizador volte para esta tela ao pressionar "Voltar"
         }
     }
 }
