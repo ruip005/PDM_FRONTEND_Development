@@ -93,14 +93,18 @@ class QrScannerFragment : Fragment() {
                 Toast.makeText(requireContext(), "Scan cancelado", Toast.LENGTH_SHORT).show()
             } else {
                 // Exibir o resultado do scan
-                tvScanResult.text = result.contents
+                //tvScanResult.text = result.contents
                 tvScanResult.visibility = View.VISIBLE
-                Toast.makeText(requireContext(), "Resultado: ${result.contents}", Toast.LENGTH_LONG).show()
+                //Toast.makeText(requireContext(), "Resultado: ${result.contents}", Toast.LENGTH_LONG).show()
                 // Copiar para o clipboard
                 val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("qr_code", result.contents)
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(requireContext(), "Resultado copiado para o clipboard", Toast.LENGTH_SHORT).show()
+                //Abrir no navegador
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = android.net.Uri.parse(result.contents)
+                startActivity(intent)
             }
         }
     }

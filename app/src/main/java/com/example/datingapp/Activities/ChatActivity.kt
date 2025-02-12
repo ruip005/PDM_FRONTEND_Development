@@ -3,10 +3,9 @@ package com.example.datingapp.Activities
 import android.os.Bundle
 import android.os.Message
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.datingapp.R
-import com.example.datingapp.Adapters.*
-import com.example.datingapp.Classes.*
+import com.example.datingapp.adapters.*
+
 //import kotlinx.android.synthetic.main.activity_chat.*
 
 class ChatActivity : AppCompatActivity() {

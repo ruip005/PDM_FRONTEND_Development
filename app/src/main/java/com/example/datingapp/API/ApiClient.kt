@@ -14,7 +14,9 @@ import com.example.datingapp.API.Endpoints.RegisterResponse
 import com.example.datingapp.API.Endpoints.UpdateUserRequest
 import com.example.datingapp.API.Endpoints.UpdateUserResponse
 import com.example.datingapp.API.Endpoints.UploadProfileResponse
+import com.example.datingapp.Activities.ProfileActivity
 import com.example.datingapp.Utils.DataUtils
+import com.example.datingapp.Utils.DialogUtils
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -508,6 +510,7 @@ object ApiClient {
         val body = JSONObject()
         body.put("userIdentificator", userGuid)
         body.put("decision", decision)
+        //DialogUtils.showErrorPopup(ProfileActivity::class::java, "JSON", body.toString())
         val call = apiService.decisionUser("Bearer $sessionToken", body.toString())
         call.enqueue(object : Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {

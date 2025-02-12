@@ -88,7 +88,7 @@ class RegisterActivity : AppCompatActivity() {
                 DataTypeUtils.isEmailValid(email) &&
                 DataTypeUtils.isPasswordValid(password) &&
                 DataTypeUtils.isDateCalendarValid(birthDate) &&
-                DataTypeUtils.isAnAdult(birthDate) &&
+                //DataTypeUtils.isAnAdult(birthDate) &&
                 gender.isNotEmpty() &&
                 password == confirmPassword
             ) {
@@ -128,15 +128,15 @@ class RegisterActivity : AppCompatActivity() {
                 if (!DataTypeUtils.isPasswordValid(password)) {
                     passwordEditText.error = "Palavra-passe inválida"
                 }
-                if (!DataTypeUtils.isAnAdult(birthDate)) {
+                /*if (!DataTypeUtils.isAnAdult(birthDate)) {
                     birthDateEditText.error = "Precisa ser maior de idade"
-                }
+                }*/
                 if (gender.isEmpty()) {
                     genderEditText.error = "Gênero inválido"
                 }
-                if (!DataTypeUtils.isDateCalendarValid(birthDate)) {
+                /*if (!DataTypeUtils.isDateCalendarValid(birthDate)) {
                     birthDateEditText.error = "Data de nascimento inválida"
-                }
+                }*/
                 if (password != confirmPassword) {
                     confirmPasswordEditText.error = "As palavras-passe não coincidem"
                     passwordEditText.error = "As palavras-passe não coincidem"

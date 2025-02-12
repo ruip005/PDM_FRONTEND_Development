@@ -1,4 +1,5 @@
-package com.example.datingapp.Adapters
+
+package com.example.datingapp.adapters
 
 import android.os.Message
 import android.view.LayoutInflater
@@ -7,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.datingapp.R
-import com.example.datingapp.Classes.*
 
 
 class MessageAdapter(private val messages: List<Message>) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {

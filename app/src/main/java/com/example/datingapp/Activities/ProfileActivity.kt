@@ -31,6 +31,9 @@ class ProfileActivity : AppCompatActivity() {
         binding = ActivityRatingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Criar uma variavel string que podera mudar ao longo do tempo o userguid
+        var UserID: String? = null
+
         // Configuração do menu de navegação (Perfil, Ratings e Chat)
         val menuProfile = findViewById<LinearLayout>(R.id.menuMeuPerfil)
         val menuRating = findViewById<LinearLayout>(R.id.menuRating)
@@ -64,7 +67,7 @@ class ProfileActivity : AppCompatActivity() {
         }
 
         // Configura os botões de "Like" e "Dislike"
-        setupDecisionButtons()
+        setupDecisionButtons(UserID.toString())
     }
 
     /**
@@ -101,6 +104,7 @@ class ProfileActivity : AppCompatActivity() {
      */
     private fun loadUserProfile(userGuid: String) {
         val request = GetProfileRequest(isFull = true, morePhotos = true)
+        DialogUtils.showErrorPopup(this, "Carregando perfil", userGuid)
         try {
             ApiClient.getUser(this, userGuid, request) { response, error ->
                 if (error != null) {
@@ -156,11 +160,11 @@ class ProfileActivity : AppCompatActivity() {
     /**
      * Configura os botões de "Like" e "Dislike" para interagir com os perfis.
      */
-    private fun setupDecisionButtons() {
+    private fun setupDecisionButtons(UserID: String) {
         binding.dislikeButton.setOnClickListener {
             val userGuid = getUserGuid()
             if (userGuid != null) {
-                decisionUser(userGuid, DecisionType.pass)
+                decisionUser(UserID, DecisionType.pass)
             } else {
                 Toast.makeText(this, "Erro: GUID do utilizador não encontrado.", Toast.LENGTH_SHORT).show()
             }
@@ -180,6 +184,7 @@ class ProfileActivity : AppCompatActivity() {
      * Envia a decisão do utilizador (Like ou Dislike) para a API.
      */
     private fun decisionUser(userGuid: String, decision: DecisionType) {
+        //DialogUtils.showErrorPopup(this, "Decision", decision.toString())
         ApiClient.decisionUser(this, userGuid, decision.toString()) { error ->
             if (error != null) {
                 DialogUtils.showErrorPopup(this, "Erro ao enviar decisão", error)
