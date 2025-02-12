@@ -1,36 +1,41 @@
-
 package com.example.datingapp.adapters
 
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.datingapp.Database.Message
 import com.example.datingapp.R
 
+class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
 
-class MessageAdapter(private val messages: List<Message>) : RecyclerView.Adapter<MessageAdapter.MessageViewHolder>() {
+    private var messages = listOf<Message>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
-        return MessageViewHolder(view)
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val senderName: TextView = itemView.findViewById(R.id.senderName)
+        val messageText: TextView = itemView.findViewById(R.id.messageText)
+        val dateTime: TextView = itemView.findViewById(R.id.dateTime)
     }
 
-    override fun onBindViewHolder(holder: MessageViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_message, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val message = messages[position]
-        holder.bind(message)
+        holder.senderName.text = message.senderName
+        holder.messageText.text = message.message
+        holder.dateTime.text = message.dateTime.toString()
     }
 
     override fun getItemCount(): Int {
         return messages.size
     }
 
-    class MessageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val tvMessage: TextView = itemView.findViewById(R.id.tvMessage)
-
-        fun bind(message: Message) {
-            tvMessage.text = message.toString() //message.message
-        }
+    fun submitList(newMessages: List<Message>) {
+        messages = newMessages
+        notifyDataSetChanged()
     }
 }

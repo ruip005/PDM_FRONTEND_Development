@@ -44,6 +44,18 @@ android {
 }
 
 dependencies {
+    //RecyclerView
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+
+    // LiveData e ViewModel
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
+
+    // Room Database
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1") // Usar kapt para Kotlin
+    implementation("androidx.room:room-ktx:2.6.1") // Suporte a coroutines
+    //
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
     // Glide (usando kapt em vez de annotationProcessor)

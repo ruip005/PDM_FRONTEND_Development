@@ -12,6 +12,7 @@ import com.example.datingapp.API.Endpoints.RegisterResponse
 import com.example.datingapp.API.Endpoints.UpdateUserRequest
 import com.example.datingapp.API.Endpoints.UpdateUserResponse
 import com.example.datingapp.API.Endpoints.UploadProfileResponse
+import com.example.datingapp.Database.Message
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call

@@ -31,17 +31,61 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import com.example.datingapp.Database.Message
 
 object ApiClient {
 
     private const val BASE_URL = "https://api.triumphmc.tech"
+    private const val SWIPE_BASE_URL = "https://personal-b99makny.outsystemscloud.com/"
 
     private val retrofit: Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    private val swipeRetrofit: Retrofit = Retrofit.Builder()
+        .baseUrl(SWIPE_BASE_URL)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
     private val apiService: ApiService = retrofit.create(ApiService::class.java)
+    private val swipeApiService: SwipeApiService = swipeRetrofit.create(SwipeApiService::class.java)
+
+    // Métodos para a nova API
+    fun getMessages(callback: (messages: List<Message>?, error: String?) -> Unit) {
+        val call = swipeApiService.getMessages()
+        call.enqueue(object : Callback<List<Message>> {
+            override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+                callback(null, "Erro ao buscar mensagens: ${t.message}")
+            }
+
+            override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+                if (response.isSuccessful) {
+                    callback(response.body(), null)
+                } else {
+                    callback(null, "Erro ao buscar mensagens: ${response.message()}")
+                }
+            }
+        })
+    }
+
+    fun sendMessage(message: Message, callback: (response: Message?, error: String?) -> Unit) {
+        val call = swipeApiService.sendMessage(message)
+        call.enqueue(object : Callback<Message> {
+            override fun onFailure(call: Call<Message>, t: Throwable) {
+                callback(null, "Erro ao enviar mensagem: ${t.message}")
+            }
+
+            override fun onResponse(call: Call<Message>, response: Response<Message>) {
+                if (response.isSuccessful) {
+                    callback(response.body(), null)
+                } else {
+                    callback(null, "Erro ao enviar mensagem: ${response.message()}")
+                }
+            }
+        })
+    }
+
 
     fun get(url: String, headers: Map<String, String>, callback: (response: String?, error: String?) -> Unit) {
         val call = apiService.get(url, headers)

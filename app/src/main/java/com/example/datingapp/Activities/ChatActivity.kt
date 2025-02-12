@@ -1,51 +1,54 @@
 package com.example.datingapp.Activities
 
 import android.os.Bundle
-import android.os.Message
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.datingapp.Database.Message
 import com.example.datingapp.R
-import com.example.datingapp.adapters.*
-
-//import kotlinx.android.synthetic.main.activity_chat.*
+import com.example.datingapp.ViewModels.ChatViewModel
+import com.example.datingapp.adapters.MessageAdapter
+import com.example.datingapp.databinding.ActivityChatBinding
+import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
 
+    private val viewModel: ChatViewModel by viewModels()
     private lateinit var messageAdapter: MessageAdapter
-    private val messages = mutableListOf<Message>()
+    private lateinit var binding: ActivityChatBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
 
-        // Configurar RecyclerView
-        messageAdapter = MessageAdapter(messages)
-        /*
-        rvMessages.layoutManager = LinearLayoutManager(this)
-        rvMessages.adapter = messageAdapter
+        // Inicializa o View Binding
+        binding = ActivityChatBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Exemplo de dados (substitua pela lógica real)
-        val currentUser = User(id = 1, name = "João")
-        val otherUser = User(id = 2, name = "Maria")
+        // Configura o RecyclerView
+        messageAdapter = MessageAdapter()
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(this@ChatActivity)
+            adapter = messageAdapter
+        }
 
-        // Exemplo de mensagens
-        messages.add(Message(senderId = currentUser.id, receiverId = otherUser.id, message = "Olá!"))
-        messages.add(Message(senderId = otherUser.id, receiverId = currentUser.id, message = "Oi!"))
+        // Observa as mensagens do banco de dados
+        viewModel.allMessages.observe(this, Observer { messages ->
+            messageAdapter.submitList(messages)
+        })
 
-        // Atualizar a lista de mensagens
-        messageAdapter.notifyDataSetChanged()
-
-        // Configurar botão de enviar
-        btnSend.setOnClickListener {
-            val messageText = etMessage.text.toString()
+        // Envia a mensagem
+        binding.sendButton.setOnClickListener {
+            val senderName = "User"
+            val messageText = binding.messageInput.text.toString()
             if (messageText.isNotEmpty()) {
-                // Enviar mensagem (substitua pela lógica real)
-                val message = Message(senderId = currentUser.id, receiverId = otherUser.id, message = messageText)
-                messages.add(message)
-                messageAdapter.notifyItemInserted(messages.size - 1)
-
-                // Limpar campo de texto
-                etMessage.text.clear()
+                val message = Message(senderName = senderName, message = messageText, dateTime = Date())
+                viewModel.insertMessage(message)
+                binding.messageInput.text.clear()
+            } else {
+                Toast.makeText(this, "Digite uma mensagem", Toast.LENGTH_SHORT).show()
             }
-        }*/
+        }
     }
 }
