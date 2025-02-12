@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.datingapp.Database.Message
 import com.example.datingapp.R
@@ -15,7 +16,10 @@ import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
 
-    private val viewModel: ChatViewModel by viewModels()
+    private val viewModel: ChatViewModel by viewModels {
+        ViewModelProvider.AndroidViewModelFactory.getInstance(application)
+    }
+
     private lateinit var messageAdapter: MessageAdapter
     private lateinit var binding: ActivityChatBinding
 
@@ -26,9 +30,10 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /*
         // Configura o RecyclerView
         messageAdapter = MessageAdapter()
-        binding.recyclerView.apply {
+        binding.recyclerView1.apply {
             layoutManager = LinearLayoutManager(this@ChatActivity)
             adapter = messageAdapter
         }
@@ -49,6 +54,6 @@ class ChatActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Digite uma mensagem", Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
     }
 }
