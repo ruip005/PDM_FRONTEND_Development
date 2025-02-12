@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".Activities.ProfilePage">
 
+    <ImageView
+        android:id="@+id/btnBluetooth"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_bluetooth"
+    android:contentDescription="Abrir dispositivos Bluetooth"
+    android:padding="8dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginEnd="16dp" />
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

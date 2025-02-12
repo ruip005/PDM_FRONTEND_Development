@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.datingapp.API.ApiClient
+import com.example.datingapp.API.ApiClient.decisionUser
 import com.example.datingapp.API.Endpoints.GetProfileRequest
 import com.example.datingapp.R
 import com.example.datingapp.adapters.AdditionalPhotosAdapter
@@ -61,15 +62,19 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun loadUserProfile(userGuid: String) {
         val request = GetProfileRequest(isFull = true, morePhotos = true)
-
-        ApiClient.getUser(this, userGuid, request) { response, error ->
-            if (error != null) {
-                DialogUtils.showErrorPopup(this, "Erro ao buscar perfil", error)
-            } else {
-                response?.user?.let { user ->
-                    displayUserProfile(user)
+        try {
+            print("userGuid: $userGuid")
+            ApiClient.getUser(this, userGuid, request) { response, error ->
+                if (error != null) {
+                    DialogUtils.showErrorPopup(this, "Erro ao buscar perfil", error)
+                } else {
+                    response?.user?.let { user ->
+                        displayUserProfile(user)
+                    }
                 }
             }
+        } catch (e: Exception) {
+            Toast.makeText(this, "Erro ao buscar perfil", Toast.LENGTH_SHORT).show()
         }
     }
 
