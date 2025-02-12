@@ -14,14 +14,9 @@ import com.example.datingapp.API.Endpoints.RegisterResponse
 import com.example.datingapp.API.Endpoints.UpdateUserRequest
 import com.example.datingapp.API.Endpoints.UpdateUserResponse
 import com.example.datingapp.API.Endpoints.UploadProfileResponse
-import com.example.datingapp.Activities.ProfileActivity
-import com.example.datingapp.Utils.DataUtils
-import com.example.datingapp.Utils.DialogUtils
 import com.google.gson.Gson
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -31,7 +26,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
-import com.example.datingapp.Database.Message
+import com.example.datingapp.API.Endpoints.Message
 
 object ApiClient {
 

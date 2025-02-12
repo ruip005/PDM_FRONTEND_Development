@@ -1,18 +1,12 @@
 package com.example.datingapp.Activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.datingapp.Database.Message
-import com.example.datingapp.R
 import com.example.datingapp.ViewModels.ChatViewModel
 import com.example.datingapp.adapters.MessageAdapter
 import com.example.datingapp.databinding.ActivityChatBinding
-import java.util.Date
 
 class ChatActivity : AppCompatActivity() {
 

@@ -1,6 +1,6 @@
 package com.example.datingapp.API
 
-import com.example.datingapp.Database.Message
+import com.example.datingapp.API.Endpoints.Message
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
