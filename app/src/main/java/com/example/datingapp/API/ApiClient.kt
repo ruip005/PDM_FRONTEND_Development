@@ -28,6 +28,7 @@ import retrofit2.Response
 import java.io.File
 import com.example.datingapp.API.Endpoints.Message
 import com.example.datingapp.API.Endpoints.SwipeResponse
+import com.example.datingapp.Classes.GenericMessage
 
 object ApiClient {
 
@@ -47,8 +48,7 @@ object ApiClient {
     private val apiService: ApiService = retrofit.create(ApiService::class.java)
     private val swipeApiService: SwipeApiService = swipeRetrofit.create(SwipeApiService::class.java)
 
-    // Métodos para a nova API
-    fun getMessages(callback: (messages: List<Message>?, error: String?) -> Unit) {
+    fun getMessages(callback: (messages: List<GenericMessage>?, error: String?) -> Unit) {
         val call = swipeApiService.getMessages()
         call.enqueue(object : Callback<SwipeResponse> {
             override fun onFailure(call: Call<SwipeResponse>, t: Throwable) {
@@ -57,7 +57,13 @@ object ApiClient {
 
             override fun onResponse(call: Call<SwipeResponse>, response: Response<SwipeResponse>) {
                 if (response.isSuccessful) {
-                    val messages = response.body()?.MessagesList
+                    val messages = response.body()?.MessagesList?.map { msg ->
+                        GenericMessage(
+                            senderName = msg.senderName,
+                            messageText = msg.messageText,
+                            dateTime = msg.dateTime
+                        )
+                    }
                     callback(messages, null)
                 } else {
                     callback(null, "Erro ao buscar mensagens: ${response.message()}")
@@ -66,14 +72,14 @@ object ApiClient {
         })
     }
 
-    fun sendMessage(message: Message, callback: (response: Message?, error: String?) -> Unit) {
+    fun sendMessage(message: GenericMessage, callback: (response: GenericMessage?, error: String?) -> Unit) {
         val call = swipeApiService.sendMessage(message)
-        call.enqueue(object : Callback<Message> {
-            override fun onFailure(call: Call<Message>, t: Throwable) {
+        call.enqueue(object : Callback<GenericMessage> {
+            override fun onFailure(call: Call<GenericMessage>, t: Throwable) {
                 callback(null, "Erro ao enviar mensagem: ${t.message}")
             }
 
-            override fun onResponse(call: Call<Message>, response: Response<Message>) {
+            override fun onResponse(call: Call<GenericMessage>, response: Response<GenericMessage>) {
                 println(response)
                 if (response.isSuccessful) {
                     callback(response.body(), null)

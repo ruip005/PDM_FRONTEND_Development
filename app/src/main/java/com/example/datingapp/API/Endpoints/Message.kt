@@ -1,8 +1,13 @@
 package com.example.datingapp.API.Endpoints
 
+import com.example.datingapp.Classes.MessageItem
+
 data class Message(
-    //val Id: Int, // Adicionado campo Id
-    val SenderName: String, // Ajustado para corresponder ao JSON
-    val Message: String, // Ajustado para corresponder ao JSON
-    val DateTime: String // Ajustado para String para lidar com o formato ISO 8601
-)
+    val apiSenderName: String,
+    val apiMessageText: String,
+    val apiDateTime: String
+) : MessageItem {
+    override val senderName: String get() = apiSenderName
+    override val messageText: String get() = apiMessageText
+    override val dateTime: String get() = apiDateTime
+}

@@ -53,6 +53,7 @@ dependencies {
 
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation(libs.androidx.lifecycle.viewmodel.android)
     annotationProcessor("androidx.room:room-compiler:2.6.1") // Usar kapt para Kotlin
     implementation("androidx.room:room-ktx:2.6.1") // Suporte a coroutines
     //
