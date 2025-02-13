@@ -4,21 +4,17 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.datingapp.API.Endpoints.Message
-import com.example.datingapp.Database.AppDatabase
-import com.example.datingapp.Database.DatabaseMessage
 import com.example.datingapp.R
 import com.example.datingapp.Utils.DataUtils
 import com.example.datingapp.Utils.DialogUtils
-import com.example.datingapp.Utils.toMessage
-import com.example.datingapp.Utils.toDatabaseMessage
+import com.example.datingapp.Utils.isOnline
 import com.example.datingapp.ViewModels.ChatViewModel
-import com.example.datingapp.ViewModels.ChatViewModelFactory
 import com.example.datingapp.adapters.MessageAdapter
 import java.util.Date
 import java.text.SimpleDateFormat
@@ -26,17 +22,12 @@ import java.util.Locale
 
 class ChatActivity : AppCompatActivity() {
 
-    private lateinit var viewModel: ChatViewModel
+    private val viewModel: ChatViewModel by viewModels()
     private lateinit var messageAdapter: MessageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
-
-        val database = AppDatabase.getDatabase(applicationContext)
-        val messageDao = database.messageDao()
-        val factory = ChatViewModelFactory(messageDao, applicationContext)
-        viewModel = ViewModelProvider(this, factory)[ChatViewModel::class.java]
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView1)
         val sendButton = findViewById<Button>(R.id.sendButton)
@@ -50,11 +41,10 @@ class ChatActivity : AppCompatActivity() {
             adapter = messageAdapter
         }
 
-        // Observa as mensagens da API e converte DatabaseMessage para Message
+        // Observa as mensagens da API
         viewModel.messages.observe(this, Observer { messages ->
             if (messages != null) {
-                val convertedMessages = messages.map { it.toMessage() }
-                messageAdapter.submitList(convertedMessages)
+                messageAdapter.submitList(messages)
             } else {
                 messageAdapter.submitList(emptyList()) // Evita crash ao carregar a UI vazia
             }
@@ -77,8 +67,13 @@ class ChatActivity : AppCompatActivity() {
 
         // Envia a mensagem
         sendButton.setOnClickListener {
+            val isOnline = isOnline(this)
+            if (!isOnline) {
+                DialogUtils.showErrorToast(this, "Sem conexão com a internet")
+                return@setOnClickListener
+            }
             var senderName = "User"
-            // Buscar o nome no token de autenticação
+            //Buscar o nome no token de autenticação
             val jwtPayload = DataUtils.parseJwt(this)
             if (jwtPayload != null) {
                 senderName = jwtPayload.getString("name")
@@ -87,11 +82,8 @@ class ChatActivity : AppCompatActivity() {
             if (messageText.isNotEmpty()) {
                 val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
                 val formattedDate = dateFormat.format(Date())
-
                 val message = Message(senderName, messageText, formattedDate)
-                val databaseMessage = message.toDatabaseMessage() // Converter para DatabaseMessage
-                viewModel.sendMessage(databaseMessage) // Agora o tipo é correto
-
+                viewModel.sendMessage(message)
                 messageInput.text.clear()
             } else {
                 Toast.makeText(this, "Digite uma mensagem", Toast.LENGTH_SHORT).show()

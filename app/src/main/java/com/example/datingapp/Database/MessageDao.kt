@@ -1,22 +1,17 @@
 package com.example.datingapp.Database
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 
 @Dao
 interface MessageDao {
     @Insert
-    suspend fun insert(message: DatabaseMessage)
+    suspend fun insert(message: Message)
 
-    @Insert
-    suspend fun insertAll(messages: List<DatabaseMessage>)
+    @Query("SELECT * FROM messages ORDER BY dateTime DESC")
+    suspend fun getAllMessages(): List<Message>
 
-    @Query("SELECT * FROM messages ORDER BY dateTime ASC")
-    fun getAllMessages(): LiveData<List<DatabaseMessage>>
-
-    @Query("SELECT * FROM messages WHERE isSent = 0")
-    suspend fun getUnsentMessages(): List<DatabaseMessage>
-
-    @Query("UPDATE messages SET isSent = 1 WHERE id = :messageId")
-    suspend fun markAsSent(messageId: Int)
+    @Query("DELETE FROM messages")
+    suspend fun deleteAll()
 }

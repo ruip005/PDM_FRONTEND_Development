@@ -8,5 +8,5 @@ data class Message(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val senderName: String,
     val message: String,
-    val dateTime: Long // Alterado de Date para Long
+    val dateTime: String // val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 )

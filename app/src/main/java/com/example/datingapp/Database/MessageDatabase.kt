@@ -1,28 +1,26 @@
 package com.example.datingapp.Database
 
-import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import android.content.Context
 
-@Database(entities = [DatabaseMessage::class], version = 1, exportSchema = false)
-abstract class AppDatabase : RoomDatabase() {
+@Database(entities = [Message::class], version = 1, exportSchema = false)
+abstract class MessageDatabase : RoomDatabase() {
 
     abstract fun messageDao(): MessageDao
 
     companion object {
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        private var INSTANCE: MessageDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
+        fun getDatabase(context: Context): MessageDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    AppDatabase::class.java,
-                    "chat_database"
-                )
-                    .fallbackToDestructiveMigration()
-                    .build()
+                    MessageDatabase::class.java,
+                    "message_database"
+                ).build()
                 INSTANCE = instance
                 instance
             }
