@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -35,9 +36,6 @@
             android:exported="false" />
         <activity
             android:name=".layout_menu_principal"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.ChatActivity"
             android:exported="false" />
         <activity
             android:name=".Activities.ProfileActivity"
