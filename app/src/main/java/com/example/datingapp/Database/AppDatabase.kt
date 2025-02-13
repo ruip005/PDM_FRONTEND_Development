@@ -4,9 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.datingapp.API.Endpoints.Message
 
-@Database(entities = [Message::class], version = 1, exportSchema = false)
+@Database(entities = [DatabaseMessage::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun messageDao(): MessageDao
@@ -22,12 +21,11 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "chat_database"
                 )
-                    .fallbackToDestructiveMigration() // Apaga e recria a base de dados se houver erro
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
-
     }
 }
