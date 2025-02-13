@@ -74,6 +74,7 @@ object ApiClient {
             }
 
             override fun onResponse(call: Call<Message>, response: Response<Message>) {
+                println(response)
                 if (response.isSuccessful) {
                     callback(response.body(), null)
                 } else {
